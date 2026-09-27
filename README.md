@@ -1,5 +1,7 @@
 # Bandbreite eines Graphen – Cuthill-McKee und Reverse Cuthill-McKee – Streamlit-Demo
 
+**[→ Demo live ausprobieren](https://sebastianhanisch-bandbreite-demo.streamlit.app/)**
+
 Elftes Stück der **Graphen-und-Netzwerke-Reihe** der "Konzepte"-Reihe für die Website "Sebastian Hanisch – Operations Research und Machine Learning", ein direktes Kind der Wurzel (Stück 1, [bfs-dfs-demo](https://github.com/sebastian-hanisch/bfs-dfs-demo)): die **Bandbreite** B(π) = max über Kanten (u,v) von |π(u)-π(v)| misst, wie weit die Endpunkte jeder Kante in einer Knotennummerierung π auseinanderliegen – zentral beim Lösen großer dünnbesetzter Gleichungssysteme (FEM, Cholesky-Zerlegung): eine schmale Bandbreite hält alle Nicht-Null-Einträge nah an der Diagonale und macht die Zerlegung viel billiger. Bandbreiten-Minimierung ist NP-vollständig (Papadimitriou 1976) – die Standard-Heuristik **Cuthill-McKee** (1969) ist genau die Breitensuche aus Stück 1, nur mit einer zusätzlichen Gradregel ("Cuthill-McKee = BFS mit Gradregel"). **Reverse Cuthill-McKee** (George 1971) kehrt die fertige Reihenfolge nur um – ein mathematischer Fakt, kein Messwert: die Bandbreite bleibt dabei EXAKT gleich, nur das Profil (die Summe der Zeilenbreiten bis zur Diagonale) kann sich ändern.
 
 **Einordnung in die Reihe:** die Reihe hat zwölf Stücke, dies ist das elfte (Details in `graphen-planung/PLAN.md` des Portfolio-Ordners):

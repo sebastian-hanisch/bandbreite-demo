@@ -138,7 +138,7 @@ with st.sidebar:
                             args=("nstar_slider",), help="Optimale Bandbreite: ⌈(n-1)/2⌉ - von Hand nachrechenbar.")
     else:
         n_path = st.slider("Knotenzahl n", *bounds("npath_slider"), value=int(ss["npath_slider"]), key="npath_widget", on_change=store_from_widget, args=("npath_slider",),
-                            help="Bandbreite ist bei einer Pfad-Nummerierung immer exakt 1.")
+                            help="Die optimale Bandbreite des Pfads ist 1 (natürlich, Cuthill-McKee, Reverse Cuthill-McKee); nur die zufällige Nummerierung ist schlechter.")
 
     st.markdown("---")
     n_current = _instance_n(kind, side, n_ba, n_star, n_path)
@@ -291,6 +291,6 @@ Implementiert in `band_algorithm.py` (Bandbreite/Profil, Cuthill-McKee/Reverse C
 st.markdown("---")
 st.caption(
     "Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – "
-    "Operations Research und Machine Learning. Interesse an einer maßgeschneiderten Lösung für "
-    "Ihr Unternehmen? [Kontakt aufnehmen](https://sebastianhanisch.net/kontakt.html)"
+    "Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). "
+    "Mehr zur Reihe: [Graphen und Netzwerke: BFS bis Cliquenbandbreite](https://sebastianhanisch.net/konzepte-graphen-netzwerke.html)."
 )

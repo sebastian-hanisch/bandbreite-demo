@@ -109,7 +109,7 @@ PRESET_HELP = {
                                                                        "sie exakt auf 8 zurück (volle Erholung, gemessen über alle getesteten Rastergrößen/Seeds).",
     "Stern von Hand (Cuthill-McKee verfehlt das Optimum)": "Bei n=15 erreicht Cuthill-McKee Bandbreite 13 (=n-2) - das wahre, von Hand nachrechenbare Optimum ist 7 (⌈(n-1)/2⌉). Ab n=5 verfehlt "
                                                             "die Heuristik das Optimum IMMER, ein gemessener Schwachpunkt auf Hub-dominierten Graphen.",
-    "Pfad (Bandbreite immer 1)": "Die einfachste denkbare Instanz: Bandbreite ist 1, egal welche der vier Nummerierungen gewählt wird.",
+    "Pfad (Bandbreite immer 1)": "Die einfachste denkbare Instanz: Bandbreite ist 1 bei natürlicher, Cuthill-McKee- und Reverse-Cuthill-McKee-Nummerierung (nur die zufällige Nummerierung ist schlechter: n=15 → 12).",
     "Skalenfreies Netz härten": "Cuthill-McKee halbiert die Bandbreite fast (56→30 bei n=60) - bleibt aber deutlich über der Diameter-Schranke (12), anders als beim Raster.",
     "Cuthill-McKee gegen Reverse Cuthill-McKee: Profil-Unterschied": "Über 200 zufällige Instanzen: Bandbreite(CM)==Bandbreite(RCM) in ALLEN 200 Fällen (Satz) - das Profil ist bei RCM in 174 "
                                                                      "von 200 Fällen kleiner, in 26 gleich, in keinem Fall größer (gemessen, nicht bewiesen).",

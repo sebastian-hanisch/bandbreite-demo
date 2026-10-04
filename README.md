@@ -13,7 +13,7 @@ Elftes Stück der **Graphen-und-Netzwerke-Reihe** der "Konzepte"-Reihe für die 
  ├─ 5 Graphfärbung                                                            [gebaut: graph-coloring-demo]
  ├─ 6 Zentralität ─ 7 Strukturkennzahlen ─ 8 Robustheit ─ 9 Kaskaden/Ausbr.   [gebaut: centrality-demo, strukturkennzahlen-demo, robustheit-demo, kaskaden-demo]
  │                            └─ 10 Kritische Knoten härten                   [gebaut: haertung-demo]
- └─ 11 Bandbreite ─ 12 Bandbreite von G(n,k,b) und Cliquenüberdeckung         [gebaut: bandbreite-demo ─ DIESES STÜCK]
+ └─ 11 Bandbreite ─ 12 Bandbreite von G(n,k,b) und Cliquenüberdeckung         [gebaut: bandbreite-demo ─ DIESES STÜCK, cliquenbandbreite-demo]
 ```
 
 Ergebnis in Kürze – zwei ehrliche Überraschungen: Auf dem Betriebsnetz-Raster erreicht Cuthill-McKee nach zufälliger Vertauschung in **ALLEN 35 getesteten (Seitenlänge, Seed)-Kombinationen** einen Erholungsgrad von **exakt 1.0** – volle Erholung auf die natürliche (und, soweit exakt überprüfbar, optimale) Bandbreite, kein einziger Ausreißer. Auf dem **Stern-Lehrbuch** dagegen verfehlt Cuthill-McKee das von Hand nachrechenbare Optimum systematisch: ab n=5 GEMESSEN immer bei Bandbreite n-2 statt des wahren Optimums ⌈(n-1)/2⌉ – ein bekanntes, hier nachgemessenes Strukturproblem der Heuristik auf Hub-dominierten Graphen (bestätigt gegen `scipy.sparse.csgraph.reverse_cuthill_mckee`, dort sogar n-1). Auf dem skalenfreien Netz bleibt der Abstand zur Diameter-Schranke deutlich größer als beim Raster und wächst mit der Größe.
@@ -31,7 +31,7 @@ Beim Lösen großer dünnbesetzter linearer Gleichungssysteme (z. B. aus der Fin
 | **H3** Bandbreite(Cuthill-McKee) == Bandbreite(Reverse Cuthill-McKee) EXAKT auf jeder Instanz. | ✅ Bestätigt als Satz (kein Toleranzband) auf 300 zufälligen Instanzen UND auf 200 weiteren Instanzen des Profilvergleichs. |
 | **H4** Reverse Cuthill-McKees Profil ist nie größer als Cuthill-McKees. | ⚠️ **Nur teilweise bestätigt (gemessen, nicht bewiesen):** auf 200 zufälligen Instanzen war RCM in 174 Fällen strikt besser, in 26 Fällen gleich, in KEINEM Fall schlechter – ein einseitiger, aber empirischer Befund, kein Satz. |
 | **H5** Der Stern hat eine von Hand nachrechenbare optimale Bandbreite, die Cuthill-McKee erreicht. | ❌ **Teilweise widerlegt:** die exakte optimale Bandbreite ⌈(n-1)/2⌉ stimmt (bestätigt gegen Brute-Force), aber Cuthill-McKee/Reverse Cuthill-McKee erreichen sie NUR bei n=3,4 – ab n=5 liegt die Heuristik GEMESSEN immer bei n-2, deutlich über dem Optimum. |
-| **H6** Der Pfad hat immer Bandbreite 1, unabhängig vom Algorithmus. | ✅ Bestätigt für n=2..40, alle vier Nummerierungen. |
+| **H6** Der Pfad hat immer Bandbreite 1, unabhängig vom Algorithmus. | ✅ Bestätigt für n=2..40 bei natürlicher, Cuthill-McKee-, Reverse-Cuthill-McKee- (und für n ≤ 9 exakter) Nummerierung; die zufällige Nummerierung ist nicht optimal. |
 | **H7** Die Diameter-Schranke wird von jeder Permutation eingehalten, auch von einer zufälligen. | ✅ Bestätigt auf 300 zufälligen Instanzen – inklusive eines Regressionstests gegen eine naive (falsche) globale Formel, die bei getrennten Komponenten eine ZU GROSSE, damit ungültige Schranke behauptet hätte (s. Design-Entscheidungen). |
 | **H8** Zufällige Vertauschung des Rasters wird von Cuthill-McKee wieder vollständig rückgängig gemacht. | ✅ **Bestätigt, stärker als erwartet:** Erholungsgrad exakt 1.0 in ALLEN 35 getesteten Fällen (Seitenlängen 4–10, 5 Seeds je Seite). |
 | **H9** Cuthill-McKee/Reverse Cuthill-McKee erreichen nie eine kleinere Bandbreite als das exakte Optimum. | ✅ Bestätigt als Satz auf allen Instanzen mit n ≤ 9 (Raster, skalenfrei, Stern, Pfad). |
@@ -48,7 +48,7 @@ Seed 35, Standardeinstellungen sofern nicht anders angegeben; alle Zahlen über 
 | **Erholungsgrad nach zufälliger Vertauschung** | EXAKT 1.0 in allen 35 getesteten (Seitenlänge, Seed)-Kombinationen (Seiten 4–10, je 5 Seeds) – volle Erholung, ausnahmslos. |
 | **Kleine Instanz gegen Exakt (Raster, Seitenlänge 3, n=9)** | Natürlich = Cuthill-McKee = Exakt = 3 (Diameter-Schranke 2) – das Raster ist hier bereits nachweislich optimal. |
 | **Stern (n=15)** | Cuthill-McKee/Reverse Cuthill-McKee erreichen Bandbreite 13 (= n-2) – das wahre Optimum ist 7 (⌈(n-1)/2⌉). Ab n=5 verfehlt die Heuristik das Optimum IMMER (gemessen für n=5,6,8,10,15,20,30), bestätigt gegen `scipy.sparse.csgraph.reverse_cuthill_mckee` (dort sogar n-1, noch schlechter). Ursache: der pseudo-periphere Start ist stets ein Blatt, wodurch der Mittelpunkt auf Position 1 (bzw. n-2 bei RCM) landet statt in der Mitte. |
-| **Pfad (n=15)** | Bandbreite 1, unabhängig von der Nummerierung. |
+| **Pfad (n=15)** | Bandbreite 1 bei natürlicher, Cuthill-McKee- und Reverse-Cuthill-McKee-Nummerierung; die zufällige Nummerierung liegt bei 12. |
 | **Skalenfreies Netz (n=60, m=2, m0=4)** | Natürliche Bandbreite 56 (die Aufbaureihenfolge selbst ist fast Worst Case), Cuthill-McKee bringt sie auf 30 (fast halbiert) – bleibt aber deutlich über der Diameter-Schranke (12). Der relative Abstand zur Schranke wächst mit n (n=20: Faktor ≈1.6, n=80: Faktor ≈2.6). |
 | **Profil Cuthill-McKee gegen Reverse Cuthill-McKee (200 zufällige Instanzen)** | Bandbreite in ALLEN 200 exakt gleich (Satz). Profil: RCM in 174 Fällen kleiner, in 26 gleich, in KEINEM Fall größer – ein einseitiger, aber rein gemessener (nicht bewiesener) Befund auf diesem Instanzen-Mix. |
 | **Wie nah an Exakt? (n≤9)** | Raster (n=9): Cuthill-McKee = Exakt = 3. Skalenfrei (n=8): Cuthill-McKee = Exakt = 3. Skalenfrei (n=9): Cuthill-McKee 4 gegen Exakt 3 (ein Schritt daneben). Stern/Pfad: exakte Formel bestätigt für alle getesteten n. |
@@ -60,7 +60,7 @@ Presets (8), alle mit den Zahlen in ihren Hilfetexten (`tests/test_presets.py`):
 | Raster natürlich (schon fast optimal) | Bandbreite 8 bei n=64, nah an der Diameter-Schranke |
 | Raster zufällig vertauscht (Cuthill-McKee stellt es wieder her) | Bandbreite 8→62→8, volle Erholung |
 | Stern von Hand (Cuthill-McKee verfehlt das Optimum) | Bandbreite 13 statt des Optimums 7 bei n=15 |
-| Pfad (Bandbreite immer 1) | Bandbreite 1, unabhängig von der Nummerierung |
+| Pfad (Bandbreite immer 1) | Bandbreite 1 bei natürlicher, Cuthill-McKee- und Reverse-Cuthill-McKee-Nummerierung (zufällig: 12) |
 | Skalenfreies Netz härten | Bandbreite fast halbiert (56→30), aber weit über der Schranke (12) |
 | Cuthill-McKee gegen Reverse Cuthill-McKee: Profil-Unterschied | 174 von 200 Instanzen: RCM-Profil kleiner |
 | Kleine Instanz gegen das exakte Optimum | Natürlich = Cuthill-McKee = Exakt = 3 bei n=9 |
@@ -143,3 +143,7 @@ venv\Scripts\streamlit run app.py
 - Papadimitriou, C. H. (1976). *The NP-completeness of the bandwidth minimization problem.* Computing 16(3), 263–270.
 
 Gebaut mit Streamlit, Plotly, NumPy und pandas.
+
+---
+
+Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). Mehr zur Reihe: [Graphen und Netzwerke: BFS bis Cliquenbandbreite](https://sebastianhanisch.net/konzepte-graphen-netzwerke.html).

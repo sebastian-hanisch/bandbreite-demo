@@ -107,7 +107,7 @@ def test_star_exact_bandwidth_matches_the_closed_form(n):
 def test_star_cm_and_rcm_bandwidth_matches_the_measured_n_minus_2_pattern(n):
     """Ehrlicher, ÜBERRASCHENDER Befund (Punkt 5, korrigiert gegenüber der Planannahme): Cuthill-McKee erreicht auf dem Stern NICHT das Optimum ⌈(n-1)/2⌉, sondern GENAU n-2 (für n>=3) - der
     pseudo-periphere Start ist immer ein Blatt, der Mittelpunkt landet dadurch auf Position 1 (bzw. n-2 bei RCM), und der gesamte Rest der Blätter muss sich auf die verbleibenden n-2 Positionen
-    verteilen. Bestätigt gegen scipy.sparse.csgraph.reverse_cuthill_mckee (liefert dort sogar n-1, noch schlechter) - ein bekanntes, hier NACHGEMESSENES Strukturproblem von Cuthill-McKee auf
+    verteilen. Bestätigt gegen scipy.sparse.csgraph.reverse_cuthill_mckee (liefert dort ebenfalls n-2) - ein bekanntes, hier NACHGEMESSENES Strukturproblem von Cuthill-McKee auf
     Stern-/Hub-dominierten Graphen, s. README "Befunde"."""
     inst = S.star_instance(n)
     adj = A.adjacency(inst.n, inst.edges)
@@ -229,8 +229,11 @@ def test_our_rcm_bandwidth_is_competitive_with_scipys_reverse_cuthill_mckee(side
         rows += [u, v]
         cols += [v, u]
     mat = csr_matrix(([1] * len(rows), (rows, cols)), shape=(inst.n, inst.n))
-    scipy_perm = scipy_rcm(mat, symmetric_mode=True)
-    scipy_bw = A.bandwidth(adj, list(scipy_perm))
+    scipy_order = scipy_rcm(mat, symmetric_mode=True)  # scipy liefert die REIHENFOLGE (order[pos] = Knoten), nicht perm[Knoten] = pos
+    scipy_perm = [0] * inst.n
+    for pos, node in enumerate(scipy_order):
+        scipy_perm[int(node)] = pos
+    scipy_bw = A.bandwidth(adj, scipy_perm)
     assert our_bw <= 2 * max(scipy_bw, 1)
 
 

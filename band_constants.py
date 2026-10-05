@@ -44,7 +44,7 @@ def star_optimal_bandwidth(n):
 def star_cm_bandwidth(n):
     """GEMESSENER (nicht angenommener) Wert von Cuthill-McKee/Reverse-Cuthill-McKee auf dem Stern K_{1,n-1}, n>=3: exakt n-2, für n>=5 NACHWEISLICH schlechter als das wahre Optimum
     `star_optimal_bandwidth(n)` - der pseudo-periphere Start ist stets ein Blatt, der Mittelpunkt landet dadurch auf Position 1 bzw. n-2 statt in der Mitte (s. README "Befunde", bestätigt
-    unabhängig gegen scipy.sparse.csgraph.reverse_cuthill_mckee, dort sogar n-1)."""
+    unabhängig gegen scipy.sparse.csgraph.reverse_cuthill_mckee, dort ebenfalls n-2)."""
     n = int(n)
     if n < 3:
         raise ValueError("nur für n>=3 definiert")
@@ -83,7 +83,7 @@ ALGORITHM_LABELS = {"natural": "Natürlich", "random": "Zufällig", "cm": "Cuthi
 #   auf EXAKT 8 zurueck, den natuerlichen (und, s. exakter Vergleich bei side=3, vermutlich optimalen) Wert - volle Erholung (Erholungsgrad 1.0), gemessen ueber ALLE getesteten Seiten/Seeds
 #   (4..10 x 5 Seeds, s. tests/test_evaluation.py), nicht nur diesen einen Fall.
 # STERN (n=15): Cuthill-McKee/Reverse-Cuthill-McKee erreichen Bandbreite 13 (= n-2, GEMESSEN, kein Zufall) - das wahre Optimum waere 7 (=ceil(14/2)). Ab n=5 verfehlt Cuthill-McKee das Optimum
-#   IMMER (s. tests/test_algorithm_base.py) - ein ueberraschender, ehrlich berichteter Schwachpunkt der Heuristik auf Hub-dominierten Graphen (bestaetigt gegen scipy.sparse.csgraph, dort n-1).
+#   IMMER (s. tests/test_algorithm_base.py) - ein ueberraschender, ehrlich berichteter Schwachpunkt der Heuristik auf Hub-dominierten Graphen (bestaetigt gegen scipy.sparse.csgraph, dort ebenfalls n-2).
 # PFAD (n=15): Bandbreite ist 1, unabhaengig von der gewaehlten Nummerierung.
 # SKALENFREI (n=60, m=2, m0=4): natuerliche Bandbreite 56 (die Bau-Reihenfolge selbst ist fast worst-case), Cuthill-McKee bringt sie auf 30 (fast halbiert) - aber die Diameter-Schranke liegt bei
 #   nur 12: der Abstand zum Optimum bleibt auf skalenfreien Netzen deutlich groesser als beim Raster (s. README "Befunde").
